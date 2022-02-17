@@ -1,0 +1,19 @@
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+    <bean id="mainController" class="com.dsid.controllers.MainController">
+        <constructor-arg ref="controllerCommunicator"/>
+        <constructor-arg ref="queueManager"/>
+        <constructor-arg ref="objectManager"/>
+    </bean>
+    <bean id="configController" class="com.dsid.controllers.ConfigController">
+        <constructor-arg ref="controllerCommunicator"/>
+        <constructor-arg ref="queueManager"/>
+    </bean>
+    <bean id="controllerCommunicator" class="com.dsid.model.impl.ControllerCommunicatorImpl"/>
+    <bean id="objectManager" class="com.dsid.model.impl.ObjectManagerImpl"/>
+    <bean id="queueManager" class="com.dsid.model.impl.QueueManagerImpl">
+        <constructor-arg ref="objectManager"/>
+    </bean>
+</beans>
