@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="testLoad">
-    <output-path>$PROJECT_DIR$/out/artifacts/testLoad</output-path>
-    <root id="archive" name="testLoad.jar">
-      <element id="module-output" name="mqTester" />
-    </root>
-  </artifact>
-</component>

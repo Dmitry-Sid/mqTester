@@ -1,11 +1,11 @@
 package com.dsid.model.impl;
 
-import com.dsid.Main;
 import com.dsid.model.ObjectManager;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.beans.PropertyDescriptor;
+import java.beans.Statement;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Map;
@@ -22,8 +22,7 @@ public class ObjectManagerImpl implements ObjectManager {
             final T object = loadedClass.newInstance();
             properties.forEach((fieldName, value) -> {
                 try {
-                    final PropertyDescriptor propertyDescriptor = new PropertyDescriptor(fieldName, loadedClass);
-                    propertyDescriptor.getWriteMethod().invoke(object, value);
+                    new Statement(object, "set" + StringUtils.capitalize(fieldName), new Object[]{value}).execute();
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
