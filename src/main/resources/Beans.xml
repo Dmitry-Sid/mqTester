@@ -2,18 +2,25 @@
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
-    <bean id="mainController" class="com.dsid.controllers.MainController">
-        <constructor-arg ref="controllerCommunicator"/>
-        <constructor-arg ref="queueManager"/>
-        <constructor-arg ref="objectManager"/>
+    <bean id="abstractController" class="com.dsid.controllers.AbstractController" abstract="true">
+        <constructor-arg index="0" ref="controllerCommunicator"/>
     </bean>
-    <bean id="configController" class="com.dsid.controllers.ConfigController">
-        <constructor-arg ref="controllerCommunicator"/>
-        <constructor-arg ref="queueManager"/>
+    <bean id="mainController" class="com.dsid.controllers.MainController" parent="abstractController">
+        <constructor-arg index="1" ref="queueManager"/>
+        <constructor-arg index="2" ref="objectManager"/>
+    </bean>
+    <bean id="configController" class="com.dsid.controllers.ConfigController" parent="abstractController">
+        <constructor-arg index="1" ref="queueManager"/>
     </bean>
     <bean id="controllerCommunicator" class="com.dsid.model.impl.ControllerCommunicatorImpl"/>
-    <bean id="objectManager" class="com.dsid.model.impl.ObjectManagerImpl"/>
-    <bean id="queueManager" class="com.dsid.model.impl.QueueManagerImpl">
-        <constructor-arg ref="objectManager"/>
+    <bean id="objectConverter" class="com.dsid.model.impl.ObjectConverterImpl"/>
+    <bean id="objectManager" class="com.dsid.model.impl.ObjectManagerImpl">
+        <constructor-arg index="0" ref="objectConverter"/>
+        <constructor-arg index="1" value="loadedJars.mq"/>
+    </bean>
+    <bean id="queueManager" class="com.dsid.model.impl.QueueManagerImpl" destroy-method="destroy">
+        <constructor-arg index="0" ref="objectManager"/>
+        <constructor-arg index="1" ref="objectConverter"/>
+        <constructor-arg index="2" value="configuration.mq"/>
     </bean>
 </beans>

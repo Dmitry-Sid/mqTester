@@ -9,15 +9,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
+import org.apache.commons.io.FileUtils;
 
 import javax.inject.Inject;
 import java.io.File;
-import java.net.MalformedURLException;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
-public class MainController {
-    private final ControllerCommunicator controllerCommunicator;
+public class MainController extends AbstractController {
     private final QueueManager queueManager;
     private final ObjectManager objectManager;
 
@@ -32,7 +32,7 @@ public class MainController {
 
     @Inject
     public MainController(ControllerCommunicator controllerCommunicator, QueueManager queueManager, ObjectManager objectManager) {
-        this.controllerCommunicator = controllerCommunicator;
+        super(controllerCommunicator);
         this.queueManager = queueManager;
         this.objectManager = objectManager;
         queueManager.onMessage(message -> Platform.runLater(() -> rightTextArea.setText(message)));
@@ -44,14 +44,19 @@ public class MainController {
         fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("jar Files", "*.jar*"));
         loadItem.setOnAction(event -> {
             final List<File> list = fileChooser.showOpenMultipleDialog(leftTextArea.getScene().getWindow());
-            if (list != null) {
+            if (list != null && !list.isEmpty()) {
                 list.forEach(file -> {
                     try {
-                        objectManager.register(file.toURI().toURL());
-                    } catch (MalformedURLException e) {
+                        final File copiedFile = new File(file.getName());
+                        if (!file.getAbsolutePath().equals(copiedFile.getAbsolutePath())) {
+                            FileUtils.copyFile(file, copiedFile);
+                        }
+                        objectManager.register(copiedFile.toURI().toURL());
+                    } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
                 });
+                controllerCommunicator.information("Files uploaded successfully");
             }
         });
     }
@@ -63,12 +68,13 @@ public class MainController {
 
     @FXML
     void save(ActionEvent event) {
-
+        queueManager.save();
+        objectManager.save();
+        controllerCommunicator.information("Project saved successfully");
     }
 
     @FXML
     void send(ActionEvent event) {
         queueManager.send(leftTextArea.getText());
     }
-
 }

@@ -1,5 +1,6 @@
 package com.dsid;
 
+import com.dsid.model.ControllerCommunicator;
 import com.dsid.model.SpringFxmlLoader;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -19,14 +20,20 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        PropertyConfigurator.configure(getClass().getClassLoader().getResource("log4j.properties"));
-        Thread.setDefaultUncaughtExceptionHandler((t, e) -> log.error("Error", e));
         SpringFxmlLoader.init("Beans.xml");
+        PropertyConfigurator.configure(getClass().getClassLoader().getResource("log4j.properties"));
+        Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
+            log.error("Error", e);
+            SpringFxmlLoader.getContext().getBean(ControllerCommunicator.class).error(e);
+        });
         final Parent root = (Parent) SpringFxmlLoader.load("fxml/main.fxml");
-
-        primaryStage.setTitle("mqTester");
+        primaryStage.setTitle("MqTester");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
         Platform.setImplicitExit(true);
+        primaryStage.setOnCloseRequest(t -> {
+            Platform.exit();
+            System.exit(0);
+        });
     }
 }
