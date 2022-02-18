@@ -1,51 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="400.0" prefWidth="600.0" stylesheets="/css/main.css"
-            xmlns="http://javafx.com/javafx/8.0.101" fx:controller="com.dsid.controllers.MainController">
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" stylesheets="/css/main.css" xmlns="http://javafx.com/javafx/8.0.101" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.dsid.controllers.MainController">
     <bottom>
-        <HBox alignment="CENTER" prefHeight="67.0" style="-fx-spacing: 100;" styleClass="dark"
-              BorderPane.alignment="CENTER">
+        <HBox alignment="CENTER" prefHeight="67.0" style="-fx-spacing: 100;" styleClass="dark" BorderPane.alignment="CENTER">
             <children>
                 <Button alignment="CENTER" mnemonicParsing="false" onAction="#send" text="Send">
                     <HBox.margin>
-                        <Insets/>
+                        <Insets />
                     </HBox.margin>
                 </Button>
             </children>
         </HBox>
     </bottom>
-    <center>
-        <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-            <center>
-                <Separator orientation="VERTICAL" prefHeight="288.0" prefWidth="41.0" BorderPane.alignment="CENTER"/>
-            </center>
-            <right>
-                <TextArea fx:id="rightTextArea" prefWidth="280.0" BorderPane.alignment="CENTER"/>
-            </right>
-            <left>
-                <TextArea fx:id="leftTextArea" prefWidth="280.0" BorderPane.alignment="CENTER"/>
-            </left>
-        </BorderPane>
-    </center>
     <top>
         <MenuBar BorderPane.alignment="CENTER">
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#save" text="Save"/>
-                        <MenuItem fx:id="loadItem" mnemonicParsing="false" text="Load jars"/>
+                        <MenuItem mnemonicParsing="false" onAction="#save" text="Save" />
+                        <MenuItem fx:id="loadItem" mnemonicParsing="false" text="Load jars" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edit">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#configure" text="Configure"/>
+                        <MenuItem mnemonicParsing="false" onAction="#configure" text="Configure" />
                     </items>
                 </Menu>
             </menus>
         </MenuBar>
     </top>
+   <center>
+      <SplitPane dividerPositions="0.5" BorderPane.alignment="CENTER">
+         <items>
+                <TextArea fx:id="leftTextArea" />
+                <TextArea fx:id="rightTextArea" />
+         </items>
+      </SplitPane>
+   </center>
 </BorderPane>
