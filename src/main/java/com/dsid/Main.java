@@ -28,7 +28,7 @@ public class Main extends Application {
         });
         final Parent root = (Parent) SpringFxmlLoader.load("fxml/main.fxml");
         primaryStage.setTitle("MqTester");
-        primaryStage.setScene(new Scene(root, 600, 400));
+        primaryStage.setScene(new Scene(root));
         primaryStage.show();
         Platform.setImplicitExit(true);
         primaryStage.setOnCloseRequest(t -> {

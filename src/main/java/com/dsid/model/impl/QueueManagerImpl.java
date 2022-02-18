@@ -38,8 +38,6 @@ public class QueueManagerImpl implements QueueManager {
                 configure(configuration);
             }
         }
-        // Закешировать
-        objectManager.getSuccessors(ConnectionFactory.class);
     }
 
     @Override
